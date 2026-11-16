@@ -1,0 +1,8 @@
+[
+{
+  "directory": "C:/robot/cCode/laptop/build",
+  "command": "C:\\mingw64\\bin\\g++.exe  @CMakeFiles\\app.dir\\includes_CXX.rsp -g -std=gnu++23 -O3 -march=native -ffast-math -o CMakeFiles\\app.dir\\main.cpp.obj -c C:\\robot\\cCode\\laptop\\main.cpp",
+  "file": "C:/robot/cCode/laptop/main.cpp",
+  "output": "CMakeFiles/app.dir/main.cpp.obj"
+}
+]
