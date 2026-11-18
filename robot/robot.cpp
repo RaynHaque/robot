@@ -16,9 +16,11 @@ std::atomic<uint16_t> receivedByte{0};
 constexpr float kServoPeriodUs = 20000.0f;
 constexpr float kServoMinUs = 600.0f;  // pulse for 0 degrees
 constexpr float kServoMaxUs = 2400.0f; // pulse for 180 degrees
-constexpr uint servo1Pin = 0;         // SERVO1 -> GP0
-constexpr uint servo2Pin = 28;        // SERVO2 -> GP28
+constexpr uint servo1Pin;         // SERVO1 -> GP0
+constexpr uint servo2Pin;        // SERVO2 -> GP28
 constexpr int sleep = 1;
+constexpr int minAngle=5;
+constexpr int maxAngle=175;
 
 //-- motors
 constexpr int u1;
@@ -89,10 +91,10 @@ void motor_stop(uint in1, uint in2, uint en)
 
 static int servo_set_angle(uint pin, int degrees)
 {
-    if (degrees <= 0)
-        degrees = 5;
-    if (degrees >= 180)
-        degrees = 175;
+    if (degrees < minAngle)
+        degrees = minAngle;
+    if (degrees > maxAngle)
+        degrees = maxAngle;
 
     float pulseUs = kServoMinUs + (degrees / 180.0f) * (kServoMaxUs - kServoMinUs);
     uint16_t level = (uint16_t)((pulseUs / kServoPeriodUs) * 65536.0f);
@@ -242,15 +244,15 @@ int main()
             {
                 motor_forward(topLeftIN1, topLeftIN2, topLeftPWM, speed);
                 motor_backward(topRightIN1, topRightIN2, topRightPWM, speed);
-                motor_backward(bottomLeftIN1, bottomLeftIN2, bottomLeftPWM, speed);
-                motor_forward(bottomRightIN1, bottomRightIN2, bottomRightPWM, speed);
+                motor_forward(bottomLeftIN1, bottomLeftIN2, bottomLeftPWM, speed);
+                motor_backward(bottomRightIN1, bottomRightIN2, bottomRightPWM, speed);
             }
             else if (c && a)
             {
                 motor_backward(topLeftIN1, topLeftIN2, topLeftPWM, speed);
                 motor_forward(topRightIN1, topRightIN2, topRightPWM, speed);
-                motor_forward(bottomLeftIN1, bottomLeftIN2, bottomLeftPWM, speed);
-                motor_backward(bottomRightIN1, bottomRightIN2, bottomRightPWM, speed);
+                motor_backward(bottomLeftIN1, bottomLeftIN2, bottomLeftPWM, speed);
+                motor_forward(bottomRightIN1, bottomRightIN2, bottomRightPWM, speed);
             }
             else if (w)
             {
@@ -302,17 +304,19 @@ int main()
             }
             else if (d)
             {
+                
                 motor_forward(topLeftIN1, topLeftIN2, topLeftPWM, speed);
                 motor_backward(topRightIN1, topRightIN2, topRightPWM, speed);
-                motor_forward(bottomLeftIN1, bottomLeftIN2, bottomLeftPWM, speed);
-                motor_backward(bottomRightIN1, bottomRightIN2, bottomRightPWM, speed);
+                motor_forward(bottomRightIN1, bottomRightIN2, bottomRightPWM, speed);
+                motor_backward(bottomLeftIN1, bottomLeftIN2, bottomLeftPWM, speed);
             }
             else if (a)
             {
+             
                 motor_backward(topLeftIN1, topLeftIN2, topLeftPWM, speed);
                 motor_forward(topRightIN1, topRightIN2, topRightPWM, speed);
-                motor_backward(bottomLeftIN1, bottomLeftIN2, bottomLeftPWM, speed);
-                motor_forward(bottomRightIN1, bottomRightIN2, bottomRightPWM, speed);
+                motor_forward(bottomLeftIN1, bottomLeftIN2, bottomLeftPWM, speed);
+                motor_backward(bottomRightIN1, bottomRightIN2, bottomRightPWM, speed);   
             }
             else
             {
